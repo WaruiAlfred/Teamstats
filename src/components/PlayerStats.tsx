@@ -8,6 +8,14 @@ const fetchPlayersStats = async () => {
   return data;
 };
 
+interface PlayerData {
+  sessionStatId: string;
+  playerId: string;
+  playerName: string;
+  clubAssignedStatName: string;
+  lastUpdated: string;
+}
+
 interface PlayerStatsProps {}
 
 const PlayerStats: FC<PlayerStatsProps> = () => {
@@ -23,7 +31,7 @@ const PlayerStats: FC<PlayerStatsProps> = () => {
         {isLoading && <p className="text-center">Loading players stats...</p>}
         {isError && <p className="text-center">Error while fetching data</p>}
         {data &&
-          data.map((player: any) => {
+          data.map((player: PlayerData) => {
             return (
               <PlayerStatsCard
                 key={player.playerId}
