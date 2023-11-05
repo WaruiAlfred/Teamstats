@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import PlayerStatsCard from "./PlayerStatsCard";
 import { useQuery } from "react-query";
 
@@ -12,7 +12,7 @@ interface PlayerData {
   sessionStatId: string;
   playerId: string;
   playerName: string;
-  clubAssignedStatName: string;
+  clubAssignedStatNames: string[];
   lastUpdated: string;
 }
 
@@ -24,19 +24,46 @@ const PlayerStats: FC<PlayerStatsProps> = () => {
     fetchPlayersStats
   );
 
+  const [groupedByPlayerData, setGroupedByPlayerData] = useState<
+    PlayerData[] | any
+  >([]);
+
+  useEffect(() => {
+    if (data) {
+      const groupedData = data.reduce((acc: any, curr: any) => {
+        if (!acc[curr.playerId]) {
+          acc[curr.playerId] = {
+            sessionStatId: curr.sessionStatId,
+            playerId: curr.playerId,
+            playerName: curr.playerName,
+            clubAssignedStatNames: [],
+            lastUpdated: curr.lastUpdated,
+          };
+        }
+        acc[curr.playerId].clubAssignedStatNames.push(
+          curr.clubAssignedStatName
+        );
+        return acc;
+      }, {});
+      const arrayOfPlayers = Object.values(groupedData);
+
+      setGroupedByPlayerData(arrayOfPlayers);
+    }
+  }, [data]);
+
   return (
     <div className="mx-40 p-2  flex flex-col">
       <p className="text-lg font-bold">Players Stats</p>
-      <div className="flex flex-wrap gap-3 mt-2">
+      <div className="flex flex-wrap gap-3 my-2 ">
         {isLoading && <p className="text-center">Loading players stats...</p>}
         {isError && <p className="text-center">Error while fetching data</p>}
-        {data &&
-          data.map((player: PlayerData) => {
+        {groupedByPlayerData &&
+          groupedByPlayerData.map((player: PlayerData) => {
             return (
               <PlayerStatsCard
                 key={player.playerId}
                 playerName={player.playerName}
-                clubAssignedStatName={player.clubAssignedStatName}
+                clubAssignedStatNames={player.clubAssignedStatNames}
               />
             );
           })}
