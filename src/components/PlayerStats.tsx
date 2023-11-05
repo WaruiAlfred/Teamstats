@@ -1,6 +1,6 @@
-import { FC, useEffect, useState } from "react";
-import PlayerStatsCard from "./PlayerStatsCard";
+import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import PlayerStatsCard from "./PlayerStatsCard";
 
 const fetchPlayersStats = async () => {
   const response = await fetch("http://localhost:5170/playersSessionStats");
