@@ -16,9 +16,7 @@ interface PlayerData {
   lastUpdated: string;
 }
 
-interface PlayerStatsProps {}
-
-const PlayerStats: FC<PlayerStatsProps> = () => {
+const PlayerStats = () => {
   const { data, isLoading, isError } = useQuery(
     "playersStats",
     fetchPlayersStats
