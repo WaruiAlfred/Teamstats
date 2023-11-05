@@ -10,7 +10,6 @@ const PlayerStatsCard: FC<PlayerStatsCardProps> = ({
   playerName,
   clubAssignedStatNames,
 }) => {
-  // console.log(clubAssignedStatNames);
   return (
     <div className="w-full h-full p-4 bg-gray-100 rounded-md shadow flex flex-col justify-between">
       <p className="text-md font-bold">{playerName}</p>
